@@ -1,9 +1,35 @@
 artifacts_root : artifacts
 
-
-
 data_ingestion:
   root_dir : artifacts/data_ingestion
   source_url : 'https://drive.google.com/drive/folders/19aBmKV2W7iwY0MzPjVmEM4a-dDxFvqOM?usp=sharing'
   local_data_path : artifacts/data_ingestion/Heart.zip
   unzip_path : artifacts/data_ingestion
+
+data_preprocessing:
+  root_dir : artifacts/data_preprocessing
+  input_dir : artifacts/data_ingestion/imagesTr
+  output_dir: artifacts/data_preprocessing/preprocessed
+  target_size  : [128, 128 , 64]
+
+labels_preprocessing:
+  root_dir: artifacts/labels_preprocessing
+  input_dir: artifacts/data_ingestion/labelsTr  # Point to labelsTr
+  output_dir: artifacts/labels_preprocessing/preprocessed
+  target_size: [128, 128, 64]
+
+model_training:
+  root_dir : artifacts/model_training
+  images_dir : artifacts/data_preprocessing/preprocessed
+  labels_dir : artifacts/labels_preprocessing/preprocessed
+  model_save_path : artifacts/model_training/unet_R_model.pth
+
+model_evaluation:
+  root_dir : artifacts/model_evaluation
+  images_dir : artifacts/data_preprocessing/preprocessed
+  labels_dir : artifacts/labels_preprocessing/preprocessed
+  model_save_path: artifacts/model_training/unet_R_model.pth
+  model_metrics_json: artifacts/model_evaluation/dict.json
+
+
+  
