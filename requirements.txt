@@ -1,0 +1,28 @@
+# torch==2.1.0+cu118
+# torchvision==0.16.0+cu118
+# torchaudio==2.1.0+cu118
+numpy
+pandas
+opencv-python
+matplotlib
+scipy
+scikit-learn
+scikit-image
+tqdm
+albumentations
+monai
+tensorboard
+pillow
+python-box
+pyYAML
+tqdm
+ensure
+joblib
+types-PyYAML
+
+optuna
+torchinfo
+ipykernel
+joblib
+
+-e .
