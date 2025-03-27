@@ -31,5 +31,13 @@ model_evaluation:
   model_save_path: artifacts/model_training/unet_R_model.pth
   model_metrics_json: artifacts/model_evaluation/dict.json
 
+model_optimization:
+  root_dir : artifacts/optimized_model
+  images_dir : artifacts/data_preprocessing/preprocessed
+  labels_dir : artifacts/labels_preprocessing/preprocessed
+  model_save_path: artifacts/model_training/unet_R_model.pth
+  best_model_path : artifacts/optimized_model/best_model.pth
+  model_metrics_json: artifacts/optimized_model/optimized_metrics.json
+
 
   

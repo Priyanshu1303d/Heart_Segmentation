@@ -1,0 +1,88 @@
+stages:
+  data_ingestion:
+    cmd: python src/Heart_Segmentation/pipeline/Stage_01_Data_ingestion.py
+    deps:
+      - src/Heart_Segmentation/pipeline/Stage_01_Data_ingestion.py
+      - src/Heart_Segmentation/components/Stage_01_Data_Ingestion.py
+      - config/config.yaml
+    outs:
+      - artifacts/data_ingestion/Heart.zip
+      - artifacts/data_ingestion/imagesTr
+      - artifacts/data_ingestion/labelsTr
+
+  data_preprocessing:
+    cmd: python src/Heart_Segmentation/pipeline/Stage_02_Data_Preprocessing.py
+    deps:
+      - src/Heart_Segmentation/pipeline/Stage_02_Data_Preprocessing.py
+      - src/Heart_Segmentation/components/Stage_02_Data_Preprocessing.py
+      - config/config.yaml
+      - artifacts/data_ingestion/imagesTr
+    params:
+      - TARGET_SIZE
+    outs:
+      - artifacts/data_preprocessing/preprocessed
+
+  labels_preprocessing:
+    cmd: python src/Heart_Segmentation/pipeline/Stage_03_Labels_Preprocessing.py
+    deps:
+      - src/Heart_Segmentation/pipeline/Stage_03_Labels_Preprocessing.py
+      - src/Heart_Segmentation/components/Stage_03_Label_preprocessing.py
+      - config/config.yaml
+      - artifacts/data_ingestion/labelsTr
+    params:
+      - TARGET_SIZE
+    outs:
+      - artifacts/labels_preprocessing/preprocessed
+
+  model_training:
+    cmd: python src/Heart_Segmentation/pipeline/Stage_04_Model_Training.py
+    deps:
+      - src/Heart_Segmentation/pipeline/Stage_04_Model_Training.py
+      - src/Heart_Segmentation/components/Stage_04_Model_Training.py
+      - config/config.yaml
+      - artifacts/data_preprocessing/preprocessed
+      - artifacts/labels_preprocessing/preprocessed
+    params:
+      - EPOCHS
+      - BATCH_SIZE
+      - LEARNING_RATE
+      - WEIGHT_DECAY
+      - DROPOUT_RATE
+    outs:
+      - artifacts/model_training/unet_R_model.pth
+
+  model_evaluation:
+    cmd: python src/Heart_Segmentation/pipeline/Stage_05_Model_Evaluation.py
+    deps:
+      - src/Heart_Segmentation/pipeline/Stage_05_Model_Evaluation.py
+      - src/Heart_Segmentation/components/Stage_05_Model_Evaluation.py
+      - config/config.yaml
+      - artifacts/data_preprocessing/preprocessed
+      - artifacts/labels_preprocessing/preprocessed
+      - artifacts/model_training/unet_R_model.pth
+    params:
+      - BATCH_SIZE
+    metrics:
+      - artifacts/model_evaluation/dict.json:
+          cache: false
+
+  model_optimization:
+    cmd: python src/Heart_Segmentation/pipeline/Stage_06_Model_Optimization.py
+    deps:
+      - src/Heart_Segmentation/pipeline/Stage_06_Model_Optimization.py
+      - src/Heart_Segmentation/components/Stage_06_Model_Optimization.py
+      - config/config.yaml
+      - artifacts/data_preprocessing/preprocessed
+      - artifacts/labels_preprocessing/preprocessed
+      - artifacts/model_training/unet_R_model.pth
+    params:
+      - EPOCHS
+      - BATCH_SIZE
+      - LEARNING_RATE
+      - WEIGHT_DECAY
+      - DROPOUT_RATE
+    outs:
+      - artifacts/optimized_model/best_model.pth
+    metrics:
+      - artifacts/optimized_model/optimized_metrics.json:
+          cache: false

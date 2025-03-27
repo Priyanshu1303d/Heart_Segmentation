@@ -1,0 +1,32 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/Heart_Segmentation/pipeline/Stage_01_Data_ingestion.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: 713c62aec5e996d85adf9004c075e7ca
+      size: 1602
+    - path: src/Heart_Segmentation/components/Stage_01_Data_Ingestion.py
+      hash: md5
+      md5: 76d6ab3680c2414c443ecf65bd563b03
+      size: 1078
+    - path: src/Heart_Segmentation/pipeline/Stage_01_Data_ingestion.py
+      hash: md5
+      md5: cad81edfd553220c8a2f42d578665fc9
+      size: 884
+    outs:
+    - path: artifacts/data_ingestion/Heart.zip
+      hash: md5
+      md5: 8571e02ab6aa7f4322156650030d87e4
+      size: 453870093
+    - path: artifacts/data_ingestion/imagesTr
+      hash: md5
+      md5: d8849661303c056e1807b3b631ec7ee5.dir
+      size: 260364341
+      nfiles: 21
+    - path: artifacts/data_ingestion/labelsTr
+      hash: md5
+      md5: 705f6a4ca5a2e3cdddd876bdb05501f2.dir
+      size: 357654
+      nfiles: 22
